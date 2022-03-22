@@ -12,6 +12,9 @@ $ brew install pre-commit
 ```
 <br/>
 
+
+
+
 2. 버전 확인
 ```
 $ pre-commit --v
@@ -36,3 +39,4 @@ pre-commit installed at .git/hooks/pre-commit
 
 5. 이후 commit부터 오통 포매팅 자동 반영
 - fix된 사항 있을 시 git status를 통해 modified 확인 후 다시 add & commit
+
