@@ -6,12 +6,13 @@ import argparse
 from img_path_format import COCO, YOLO
 
 parser = argparse.ArgumentParser(description='label Converting example.')
-parser.add_argument('--img_path', type=str, help='directory of image folder')
+parser.add_argument('--img_path', type=str, help='directory of image folder',
+                    default='../data/image/train')
 parser.add_argument('--label', type=str,
                     help='directory of label folder or label file path')
 parser.add_argument('--img_type', type=str, help='type of image', default=".jpg")
 parser.add_argument('--output_path', type=str,
-                    help='directory of manifest file', default="./")
+                    help='directory of manifest file', default="../data/image_path")
 parser.add_argument('--cls_list_file', type=str, default="../data/coco.names",
                     help='directory of *.names file')
 

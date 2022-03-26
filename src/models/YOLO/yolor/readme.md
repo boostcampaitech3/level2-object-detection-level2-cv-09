@@ -56,14 +56,14 @@ bash scripts/get_pretrain.sh
 예시
 ```
 cd convert2Yolo
-python yolo_img_path.py --img_path ../../../../dataset/train --label ../../../../dataset/cv_train1.json --output_path ../data/image_path
+python yolo_img_path.py --label ../../../../dataset/cv5_train0.json
 ```
 
 6. 학습을 시작한다. (epoch를 300이상으로 돌려야 한다.)
 
 예시
 ```
-python train.py --batch-size 8 --img 1280 --data coco.yaml --cfg cfg/yolor_w6.cfg --weights ./yolor_w6.pt --device 0 --name yolor_fold1 --hyp hyp.finetune.1280.yaml --epochs 900
+python train.py --batch-size 8 --img 1280 --data coco_fold1.yaml --cfg cfg/yolor_w6.cfg --weights ./yolor_w6.pt --device 0 --name yolor_fold1 --hyp hyp.finetune.1280.yaml --epochs 900
 ```
 
 7. Inference 및 submit은 추후 작성 예정

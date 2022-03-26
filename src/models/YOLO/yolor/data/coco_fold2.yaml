@@ -1,6 +1,6 @@
 # train and val datasets (image directory or *.txt file with image paths)
-train: data/image_path/train.txt 
-val: data/image_path/val.txt
+train: data/image_path/cv5_train1.txt 
+val: data/image_path/cv5_val1.txt
 test: data/image_path/test.txt 
 
 
