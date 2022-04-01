@@ -1,7 +1,8 @@
+fold_num = 1
 
 data_root = '/opt/ml/detection/dataset/'
 
-
+seed = 2022
 ###########################################################################
 #Dataset
 ###########################################################################
@@ -122,16 +123,16 @@ data = dict(
     train=dict(
         type=dataset_type,
         classes=classes,
-        # ann_file=data_root + f'cv_train{fold_num}.json',
-        ann_file=data_root + f'train.json',
+        ann_file=data_root + f'cv_train{fold_num}.json',
+        # ann_file=data_root + f'train.json',
         img_prefix=data_root,
         pipeline=train_pipeline),
     
     val=dict(
         type=dataset_type,
         classes=classes,
-        # ann_file=data_root + f'cv_val{fold_num}.json',
-        ann_file=data_root + f'test.json',
+        ann_file=data_root + f'cv_val{fold_num}.json',
+        # ann_file=data_root + f'test.json',
         img_prefix=data_root,
         pipeline=test_pipeline),
     
@@ -168,11 +169,11 @@ total_epochs = 40
 #Runtime
 ###########################################################################
 
-# expr_name = f'swinB_fold{fold_num}'
-expr_name = f'swinL_cascade'
+
+expr_name = f'swinL_cascade_fold{fold_num}'
 dist_params = dict(backend='nccl')
 
-checkpoint_config = dict(interval=9)
+checkpoint_config = dict(max_keep_ckpts=3, interval=1)
 log_config = dict(
     interval=10,
     hooks=[
@@ -182,16 +183,16 @@ log_config = dict(
             init_kwargs=dict(
                 project='swinL-cascade',
                 name=expr_name,
-                entity='cv-09'
+                entity='level2-cv-09'
         ))
     ])
-# custom_hooks = [dict(type='NumClassCheckHook')]
+custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-evaluation = dict(save_best='bbox_mAP', metric=['bbox'])
+evaluation = dict(save_best='bbox_mAP_50', metric=['bbox'])
 runner = dict(type='EpochBasedRunner', max_epochs=40)
 work_dir = './work_dirs/' + expr_name
 gpu_ids = range(0, 1)
@@ -201,7 +202,7 @@ gpu_ids = range(0, 1)
 #Model
 ###########################################################################
 # model settings
-# pretrained = 'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth'
+
 pretrained ='https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22kto1k.pth'
 model = dict(
     type='CascadeRCNN',
