@@ -1,4 +1,4 @@
-fold_num = 1
+fold_num = 2
 
 data_root = '/opt/ml/detection/dataset/'
 
@@ -19,6 +19,7 @@ multi_scale = [(x,x) for x in range(size_min, size_max+1, 32)]
 multi_scale_light = (512,512)
 
 alb_transform = [
+    # dict(type='CLAHE', p=1.0),
     dict(
         type='VerticalFlip',
         p=0.15),
@@ -100,7 +101,7 @@ train_pipeline = [
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
 ]
 
-test_pipeline = [
+val_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
@@ -115,10 +116,25 @@ test_pipeline = [
         ])
 ]
 
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=multi_scale,
+        flip=False,
+        transforms=[
+            dict(type='Resize', img_scale=multi_scale, multiscale_mode='value', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ])
+]
+
 classes = ('General trash', 'Paper', 'Paper pack', 'Metal', 'Glass', 'Plastic', 'Styrofoam', 'Plastic bag', 'Battery', 'Clothing')
 
 data = dict(
-    samples_per_gpu=4,
+    samples_per_gpu=2,
     workers_per_gpu=2,
     train=dict(
         type=dataset_type,
@@ -134,7 +150,7 @@ data = dict(
         ann_file=data_root + f'cv_val{fold_num}.json',
         # ann_file=data_root + f'test.json',
         img_prefix=data_root,
-        pipeline=test_pipeline),
+        pipeline=val_pipeline),
     
     test=dict(
         type=dataset_type,
@@ -170,7 +186,7 @@ total_epochs = 40
 ###########################################################################
 
 
-expr_name = f'swinL_cascade_fold{fold_num}'
+expr_name = f'swinL_cascade_fold{fold_num}_window7'
 dist_params = dict(backend='nccl')
 
 checkpoint_config = dict(max_keep_ckpts=3, interval=1)
@@ -203,7 +219,7 @@ gpu_ids = range(0, 1)
 ###########################################################################
 # model settings
 
-pretrained ='https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window12_384_22kto1k.pth'
+pretrained ='https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22kto1k.pth'
 model = dict(
     type='CascadeRCNN',
     backbone=dict(
@@ -211,7 +227,7 @@ model = dict(
         embed_dims=192,
         depths=[2, 2, 18, 2],
         num_heads=[6, 12, 24, 48],
-        window_size=12,
+        window_size=7,
         mlp_ratio=4,
         qkv_bias=True,
         qk_scale=None,
@@ -389,4 +405,3 @@ model = dict(
             score_thr=0.00,
             nms=dict(type='nms', iou_threshold=0.5),
             max_per_img=100)))
-            
