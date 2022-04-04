@@ -1,0 +1,11 @@
+# train and val datasets (image directory or *.txt file with image paths)
+train: data/image_path/cv5_train3.txt 
+val: data/image_path/cv5_val3.txt
+test: data/image_path/test.txt 
+
+
+# number of classes
+nc: 10
+
+# class names
+names: ['General trash', 'Paper', 'Paper pack', 'Metal', 'Glass', 'Plastic', 'Styrofoam', 'Plastic bag', 'Battery', 'Clothing']
