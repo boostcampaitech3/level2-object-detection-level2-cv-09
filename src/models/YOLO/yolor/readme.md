@@ -66,7 +66,16 @@ python yolo_img_path.py --label ../../../../dataset/cv5_train0.json
 python train.py --batch-size 8 --img 1280 --data coco_fold1.yaml --cfg cfg/yolor_w6.cfg --weights ./yolor_w6.pt --device 0 --name yolor_fold1 --hyp hyp.finetune.1280.yaml --epochs 900
 ```
 
-7. Inference 및 submit은 추후 작성 예정
+7. Inference
+
+예시
+```
+python test.py --data data/coco.yaml --img 1280 --batch 32 --conf 0.001 --iou 0.65 --device 0 --cfg cfg/yolor_w6.cfg --weights {weight 경로} --name yolor_fold1 --task test --verbose --save-conf --save-txt
+```
+
+8. Submit
+
+```submit.ipynb``` 파일을 통해 txt 파일을 제출 양식으로 변환해주면 됩니다.
 
 ### Reference
 - https://github.com/WongKinYiu/yolor
