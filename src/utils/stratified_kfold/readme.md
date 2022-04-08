@@ -7,13 +7,13 @@ pip install funcy
 
 - 사용 방법
 ```
-python coco_cv.py -n [Number of Splits (default=5)] [Data Directory]
+python stratified_kfold_group.py -n [Number of Splits (default=5)] [Data Directory]
 ```
 
 
 - 사용 예시
 ```
-python coco_cv.py -n 5 ../../detection/dataset/
+python stratified_kfold_group.py -n 5 ../../detection/dataset/
 ```
 
 #### Reference
