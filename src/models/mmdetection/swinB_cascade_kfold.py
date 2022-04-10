@@ -102,7 +102,7 @@ train_pipeline = [
     dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels']),
 ]
 
-test_pipeline = [
+val_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
@@ -110,6 +110,21 @@ test_pipeline = [
         flip=False,
         transforms=[
             dict(type='Resize', img_scale=multi_scale_light, multiscale_mode='value', keep_ratio=True),
+            dict(type='RandomFlip'),
+            dict(type='Normalize', **img_norm_cfg),
+            dict(type='ImageToTensor', keys=['img']),
+            dict(type='Collect', keys=['img']),
+        ])
+]
+
+test_pipeline = [
+    dict(type='LoadImageFromFile'),
+    dict(
+        type='MultiScaleFlipAug',
+        img_scale=multi_scale,
+        flip=False,
+        transforms=[
+            dict(type='Resize', img_scale=multi_scale, multiscale_mode='value', keep_ratio=True),
             dict(type='RandomFlip'),
             dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
@@ -136,13 +151,13 @@ data = dict(
         ann_file=data_root + f'cv_val{fold_num}.json',
         # ann_file=data_root + f'test.json',
         img_prefix=data_root,
-        pipeline=test_pipeline),
+        pipeline=val_pipeline),
     
     test=dict(
         type=dataset_type,
         classes=classes,
-        ann_file=data_root + f'cv_val{fold_num}.json',
-        # ann_file=data_root + f'test.json',
+        # ann_file=data_root + f'cv_val{fold_num}.json',
+        ann_file=data_root + f'test.json',
         img_prefix=data_root,
         pipeline=test_pipeline))
 
