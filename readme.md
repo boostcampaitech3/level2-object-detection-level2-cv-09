@@ -32,7 +32,7 @@
 - Public LB: 0.7232 mAP(3등/19팀)
 - Private LB: 0.7112 mAP(2등/19팀) 
 
-![best scores](https://user-images.githubusercontent.com/82289435/162617030-b7f29809-7cb6-40da-8029-769183e4625a.png)
+![object_detection](https://user-images.githubusercontent.com/82289435/164722125-c2ddd619-bc82-4be2-a12d-f00f945f378b.png)
 
 </br>
 
